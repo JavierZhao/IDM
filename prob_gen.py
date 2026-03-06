@@ -46,6 +46,7 @@ class MultiAgentFramework:
         self.test_model_retry_base_delay = float(
             os.getenv("TEST_MODEL_RETRY_BASE_DELAY", "2.0")
         )
+        self.modify_attempts = max(1, int(os.getenv("MODIFY_ATTEMPTS", "3")))
         self.prompt_dir = Path(prompt_dir)
         self.verify_raw_log_file = Path("logs/gemini_verify_raw.jsonl")
         self._verify_log_lock = asyncio.Lock()
@@ -192,10 +193,20 @@ class MultiAgentFramework:
                 logger.error("Error calling confusion-test model %s: %s", self.test_model, e)
                 raise
     
-    async def modify_problem(self, original_problem: str) -> Tuple[Optional[str], Optional[str]]:
+    async def modify_problem(
+        self,
+        original_problem: str,
+        attempt_idx: int = 0
+    ) -> Tuple[Optional[str], Optional[str]]:
         """Step 2: Modify well-defined problem into ill-defined using Gemini"""
         try:
             prompt = self.prompts['modify'].format(problem=original_problem)
+            if attempt_idx > 0:
+                prompt += (
+                    "\n\nPrevious candidate was rejected. Generate a different mutation strategy "
+                    "than before (e.g., remove a different necessary condition, or add a "
+                    "different contradiction) while keeping the math topic close to the original."
+                )
             messages = [{"role": "user", "content": prompt}]
             response = await self.call_gemini(
                 messages,
@@ -320,36 +331,48 @@ class MultiAgentFramework:
         original_problem = problem_data.get('problem', '')
         logger.info(f"Processing problem: {original_problem[:50]}...")
         
-        # Step 2: Modify problem
-        modified_problem, annotation = await self.modify_problem(original_problem)
-        if not modified_problem or not annotation:
-            logger.warning("Failed to modify problem")
-            return None
-        
-        # Step 3: Verify it's ill-defined
-        is_ill_defined = await self.verify_ill_defined(modified_problem)
-        if not is_ill_defined:
-            logger.info("Problem not verified as ill-defined")
-            return None
-        
-        # Step 4: Test if it confuses GPT-4o
-        is_confusing, gpt4o_response = await self.test_confusion_gpt4o(
-            modified_problem, annotation, trap_judge, llm_call_func_final_async, 
-            llm_call_func_process_async
-        )
-        if not is_confusing:
-            logger.info("Problem does not confuse GPT-4o")
-            return None
-        
-        # Step 5: Return successful result
-        logger.info("Problem successfully processed!")
-        return ProblemResult(
-            original_problem=original_problem,
-            modified_problem=modified_problem,
-            annotation=annotation,
-            verification_result=is_ill_defined,
-            confusion_result=is_confusing
-        )
+        for attempt_idx in range(self.modify_attempts):
+            # Step 2: Modify problem
+            modified_problem, annotation = await self.modify_problem(
+                original_problem,
+                attempt_idx=attempt_idx
+            )
+            if not modified_problem or not annotation:
+                logger.warning("Failed to modify problem (attempt %d)", attempt_idx + 1)
+                continue
+
+            # Step 3: Verify it's ill-defined
+            is_ill_defined = await self.verify_ill_defined(modified_problem)
+            if not is_ill_defined:
+                logger.info(
+                    "Problem not verified as ill-defined (attempt %d)",
+                    attempt_idx + 1
+                )
+                continue
+
+            # Step 4: Test if it confuses GPT-4o
+            is_confusing, gpt4o_response = await self.test_confusion_gpt4o(
+                modified_problem,
+                annotation,
+                trap_judge,
+                llm_call_func_final_async,
+                llm_call_func_process_async
+            )
+            if not is_confusing:
+                logger.info("Problem does not confuse GPT-4o (attempt %d)", attempt_idx + 1)
+                continue
+
+            # Step 5: Return successful result
+            logger.info("Problem successfully processed on attempt %d!", attempt_idx + 1)
+            return ProblemResult(
+                original_problem=original_problem,
+                modified_problem=modified_problem,
+                annotation=annotation,
+                verification_result=is_ill_defined,
+                confusion_result=is_confusing
+            )
+
+        return None
     
     async def process_problems_batch(
         self,
