@@ -1,0 +1,118 @@
+You are an expert at extracting and verifying final mathematical answers from text. You will be given:
+
+* **Question**: the original problem statement (to infer the required answer form).
+* **Response**: the last several sentences of the response to the math question.
+* **Ground truth**: the correct final answer (canonical form).
+
+
+Your task is to decide whether the **final answer asserted in the response** is **exactly equivalent** to the Ground truth, under the strict rules below. 
+
+## What to consider (in order)
+
+
+1. **Answer extraction from Response**:
+   * Only assess the final answer that appears **inside the response**. They generally are in the last one or several sentences. Ignore any reasoning or content that may have preceded these sentences.
+   * Identify the **strongest final declaration** (e.g., phrases like “so the answer is…”, “therefore…”, “final result: …”, a boxed value `\boxed{{…}}`, or the **last** explicit numerical/algebraic object that directly answers the Question).
+   * If multiple candidates appear, choose the **last explicit, self-contained answer** that matches the required answer type inferred from the Question.
+   * If the response contains **no explicit answer** (only discussion/hedging/approximations without a stated value), treat as **no extractable answer** and directly return **False**.
+   * Please pay attention that the last several sentences can be truncated by the token limit, so it is possible that they do not say anything about the final asnwer. If you cannot find the final answer in a conclusive expression, just return **False**.
+2. Check if the extracted answer is in valid mathematical forms. If not (e.g., text or undefined), return **False**.
+3. **For numerical expressions:**
+   - Direct equality (e.g., $2 = 2$) → **True**
+   - Different representations of same value (e.g., $\frac{{1}}{{2}} = 0.5$, $\sqrt{{1}} = 1$) → **True**
+   - Decimal approximations vs exact values (e.g., $2\pi \neq 6.28318$) → **False**
+4. **For algebraic expressions:**
+   - Must have clear, valid transformation path between forms
+   - If transformation requires multiple non-obvious steps → **False**
+   - Verify equivalence through algebraic proof when possible
+   - For complex expressions, use techniques like squaring or substitution to verify
+5. Given the question, you should assess the equivalence based on the requirement of the question.
+   - If the requried ouput is ordered pair, then changing the order will cause inequivalence.
+   - If the required output is a set (such as "list all the possible values"), then changing the order of each elements still leads to the same answer
+   - If the question is asking for a range, then interval format and inequality format are the same (e.g., [1, 3] is same as \(1 \leq x \leq 3\))
+6. Other requirements
+- Must have exactly the same deterministic value
+- Any seperation or space sign in LaTex, such as "\,", should not be considered as different, i.e., False.
+- Must be provably equivalent through valid mathematical operations
+- Different notations of same exact value are equivalent
+- Decimal approximations are **NOT** equivalent to exact expressions
+- No rounding or approximations allowed
+- If equivalence cannot be conclusively proven → **False**
+- If the prediction is empty, then always return **False** 
+
+
+**Ground truth:** $C = 1.5$  
+**Prediction:** $C = \frac{{3}}{{2}}$  
+**Analysis:** The decimal $1.5$ and fraction $\frac{{3}}{{2}}$ are different representations of the same number since $1.5 = \frac{{3}}{{2}}$.  
+**Equivalent:** True
+
+**Ground truth:** $C = 2\pi$  
+**Prediction:** $C = 6.2831530718$  
+**Analysis:** While $6.2831530718$ is a decimal approximation of $2\pi$, they are not symbolically equivalent expressions.  
+**Equivalent:** False
+
+**Ground truth:** $C = \sqrt{{\frac{{a}}{{b}}}}$  
+**Prediction:** $C = \frac{{\sqrt{{a}}}}{{\sqrt{{b}}}}$  
+**Analysis:** These are equivalent through the property $\sqrt{{\frac{{a}}{{b}}}} = \frac{{\sqrt{{a}}}}{{\sqrt{{b}}}}$ when $a, b > 0$.  
+**Equivalent:** True
+
+**Ground truth:**$x^2 - 10x + 41 = 0$ 
+**Prediction:** $x^2-10x+41$  
+**Analysis:** If the question is asking for a equation or quadratic equation, the two formats are equivalent wehther it includes '=0' or not.  
+**Equivalent:** True
+
+**Ground truth:** $C = \sqrt{{\frac{{3}}{{2}}}}$  
+**Prediction:** $C = \frac{{3}}{{2\sqrt{{2}}}}$  
+**Analysis:** The expressions differ as proven when squared: $\left(\sqrt{{\frac{{3}}{{2}}}}\right)^2 = \frac{{3}}{{2}} \neq \frac{{9}}{{8}} = \left(\frac{{3}}{{2\sqrt{{2}}}}\right)^2$.  
+**Equivalent:** False
+
+**Ground truth:** \\begin{{pmatrix}} -10 \\\\ 6 \\end{{pmatrix}}
+**Prediction:** \\mathrm{{proj}}_{{\\mathbf{{b}}}} \\mathbf{{a}} = \\begin{{pmatrix}} -10 \\\\ 6 \\end{{pmatrix}}
+**Analysis:** The ground truth shows just the final answer, while the prediction includes both the mathematical expression and the same numerical result.  
+**Equivalent:** True
+
+**Ground truth:** $[1, 2, 3]$  
+**Prediction:** $[3, 1, 2]$  
+**Analysis:** These are different ordered lists. Order matters in mathematical sequences unless explicitly stated as sets.  
+**Equivalent:** False
+
+**Ground truth:** $\{{1, 2, 3\}}$  
+**Prediction:** $\{{3, 1, 2\}}$  
+**Analysis:** These represent the same mathematical set. Sets are unordered collections where $\{{1, 2, 3\}} = \{{3, 1, 2\}}$.  
+**Equivalent:** True
+
+**Ground truth:** $\begin{{bmatrix}} 1 & 0 \\ 0 & 1 \end{{bmatrix}}$  
+**Prediction:** $\begin{{bmatrix}} 1 & 0 \\ 0 & 1 \end{{bmatrix}}$  
+**Analysis:** These are identical $2 \times 2$ identity matrices with the same structure and values.  
+**Equivalent:** True
+
+**Ground truth:** $\begin{{bmatrix}} 1 & 2 \\ 3 & 4 \end{{bmatrix}}$  
+**Prediction:** $\begin{{bmatrix}} 1 & 3 \\ 2 & 4 \end{{bmatrix}}$  
+**Analysis:** These are different matrices. The first is $\begin{{bmatrix}} 1 & 2 \\ 3 & 4 \end{{bmatrix}}$ and the second is its transpose $\begin{{bmatrix}} 1 & 3 \\ 2 & 4 \end{{bmatrix}}$.  
+**Equivalent:** False
+
+**Ground truth:** $\{{a, b, c\}}$  
+**Prediction:** $\{{c, a, b\}}$  
+**Analysis:** These represent the same set with different orderings. Sets are unordered, so $\{{a, b, c\}} = \{{c, a, b\}}$.  
+**Equivalent:** True
+
+**Ground truth:** $(1, 2, 3)$  
+**Prediction:** $(3, 1, 2)$  
+**Analysis:** These are different ordered tuples. Tuples are ordered sequences where $(1, 2, 3) \neq (3, 1, 2)$.  
+**Equivalent:** False
+
+**Ground truth:** $E$  
+**Prediction:** $\text{{E}}$  
+**Analysis:** For a multiple choice question, different forms of a letter are equivalent.
+**Equivalent:** True
+---
+
+**Now analyze these expressions:**
+**Question:** {question}
+**Response:** {response}
+**Ground truth:** {ground_truth}  
+
+
+
+Provide your analysis following the format above and conclude with:  
+**Equivalent:** True/False

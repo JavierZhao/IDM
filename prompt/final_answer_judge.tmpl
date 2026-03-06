@@ -1,0 +1,66 @@
+You are an expert at evaluating whether the final answer of an LLM's response to a mathematical problem explicitly says that the problem is insolvable, has no solution, underdetermined, or is ill-defined. You will be given:
+
+* **Question**: the original problem statement (to infer the possible answer form to state that the problem is insolvable).
+* **Insolvability Annotation (Ground Truth)**: the explanation of why this problem does not have a valid solution.
+* **LLM Response**: the last several sentences of a resposne from LLMs or an extracted answer within the box.
+
+
+**Instruction**:
+1. Carefully read the Question and Insolvability Annotation, and figure out whether this problem is insolvable due to insufficient conditions, contradiction, or ill-defined
+2. If you are given an extracted final answer (a sentence, a number, an equation etc.), just assess the answer itself. If you are given several sentences, locate the final answer or conclusion part, some possible keywords are "\boxed{{}}", "final answer", "conclusion" etc.  Ignore any reasoning or content that may have preceded these sentences.
+3. It is possible that the last sentence is not complete due to trunction of token limit. If you cannot find extract any final answer:  → says_insolvable: false
+4. Only assess the final answer (e.g., the answer within \boxed{{}}, or after "final conclusion"), and ignore any reasoning or content that may have preceded these sentences.
+5. Please check in the final answer or conclusion part, whether:
+    - it provides a specific numeric value or list several numeric values → says_insolvable: false
+    - it provides an (or several) equation(s) or expression(s), given that the question is asking for an equation or expression (instead of a numeric value) → says_insolvable: false
+    - it provides any other format that meets the question is asking, without signal that the conclusion indicates the problem is flawed → says_insolvable: false
+    - the question is asking for an area or a volume, and the final answer explicitly argues that the required figure cannot exist or is degenerate (e.g., triangle inequality fails/equality, points are collinear/coincident, radius/height is 0), thereby concluding the area/volume is 0 or “undefined/does not exist” → says_insolvable: true 
+    - it explicitly states that the answer is not uniquely underdetermined → says_insolvable: true
+    - it explicitly states that the current information is not enough to solve the problem → says_insolvable: true
+    - it explicitly states that the answer can be unfixed or flexible, such as "the answer can be any real number" or "the answer can be any positive number"  → says_insolvable: true
+    - the question is asking for a numeric value, but the final answer provides an expression or formula including unknowns  → says_insolvable: true
+    - it explicitly states the answer depends on parameter choices → says_insolvable: true
+    - the question is asking for a numeric value, but the final asnewr provides an interval or range of desired values → says_insolvable: true
+    - it explicitly states that the problem contains contradictory conditions → says_insolvable: true
+    - it explicitly states that there is no solution that satisfies the given conditions → says_insolvable: true
+    - The maximum or minimum that the question asks is unbounded, or cannot be attained, or can be arbitrarily large, or is not finite → says_insolvable: true
+        * example: "Actually the maximum should be $-\infty$" → says_insolvable: true
+    - The problem is asking for something that does not exist, and the final answer is "None" or "does not exist  → says_insolvable: true
+    - The response says that the problem is flawed, but in the final answer (within "\boxed{{}}", or after "final conclusion" etc.), the response still provide an answer after modify the question or random guess → says_insolvable: false
+        * example: "Even though the problem says "multiplication", it must be a typo. So final answer: $\boxed{{184}}$" → says_insolvable: false
+    - Provide the final answer, and before that introduce an assumption or change the problem to make it lead to the answer (without saying that it is problematic). → says_insolvable: false
+        * example: "Let’s assume that the weight of Ben is 110.  Then A = 150, C = 135, D = 135. All reasonable. Or B = 120, A = 140, C = 125, D = 145. Also reasonable. So no way to know. I think the problem might have been intended to have Alex and Chloe together as 270. So I'll box 142.5. $\boxed{{142.5}}$" → says_insolvable: false
+        * example: "I think the only possibility is that the number is 874, and y=3. So I will box \boxed{{3}} as the answer, assuming a typo in the constant. Final Answer \boxed{{3}}" → says_insolvable: false
+    - Suspect there is a problem / typo, but does not conclude that. → says_insolvable: false
+        * example: "Perhaps the minimum of g(u) is at u = q, and if the value at q is 2003, then one solution, but if less, two solutions, but only if the function is not monotonic. But it is. I give up. \boxed{{668}}" → says_insolvable: false
+
+**Note**:
+- Consider phrases like "no solution", "None", "impossible", "contradiction", "ill-defined", "cannot be solved", "cannot be determined", "underdetermined", "more information is needed", or other words with similar meaning
+- Do NOT count cases where the LLM simply gets stuck or says they need more information
+- Do NOT count cases where the LLM attempts a solution but gets it wrong
+- Only count clear, explicit recognition that the problem itself is flawed
+- Use the Insolvability Annotation to understand what the correct identification should be
+- Listing several values that all saitify the problem cannot be considered as underdetermined cases
+
+
+
+**More Examples:**
+- "This problem has no solution because..." → says_insolvable: true
+- "The problem is ill-defined since..." → says_insolvable: true  
+- "I cannot solve this problem" → says_insolvable: false (lacks clarity about WHY)
+- "The answer is 42" → says_insolvable: false
+- 
+
+**Now analyze the response:**
+**Question:** {question}
+**Insolvability Annotation (Ground Truth):** {trap_annotation}
+**LLM Response:** {response}
+
+**Output Format:**
+Show you step-by-step thinking first, and then present the result in the following format:
+
+reasoning: [Your explanation for the judgment, comparing to the ground truth Insolvability Annotation]
+says_insolvable: [true/false]
+
+
+

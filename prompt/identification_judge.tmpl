@@ -1,0 +1,69 @@
+You are an expert at evaluating whether the response of an LLM identified the insolvability or flaw in a mathematical problem, or feel something abnormal in the intermediate reasoning steps. You will be given:
+
+* **Question**: the original problem statement.
+* **Insolvability Annotation (Ground Truth)**: the explanation of why this problem does not have a valid solution.
+* **LLM Response**: the resposne from LLMs.
+
+**Instruction**:
+1. Carefully read the Question and Insolvability Annotation, and figure out whether this problem is insolvable due to insufficient conditions, contradiction, or ill-defined
+2. Follow the logic of LLM's response, and check whether it explicitly says or indicates any statement like "there is something wrong" or "there is a contradiction" or "there is a typo in the problem" or "the given conditions cannot determine the answer" or "no solution".
+    * example: "I notice there's a contradiction between..." → identified_trap: true
+    * example: "This seems impossible because..." → identified_trap: true
+    * example: "Wait, this doesn't make sense since..." → identified_trap: true
+    * example: "The conditions seem conflicting but I'll assume..." → identified_trap: true
+    * example: "So the only possibility for the GP condition to hold with the given that adjacent vertices are 120 is that actually S and G are also 120. But they are given as 130 and 110. So there is an inconsistency." → identified_trap: true
+    * example: "Given that this is an olympiad problem, the result likely is independent of the other conditions. So I will go with QR^2/(Area(Ω)) = ( (2r/√3)^2 )/(πr^2) = (4r^2/3)/(πr^2)= 4/(3π)." → identified_trap: true
+3. Determine whether the LLM recognized, mentioned, or identified any of the following issues with the problem:
+    - Logical inconsistencies or contradictions → identified_trap: true
+    - Missing or conflicting conditions → identified_trap: true
+        * example:  "Maybe there's something missing here?... Wait, maybe the problem is missing some information. → identified_trap: true
+    - Impossible constraints → identified_trap: true
+    - Mathematical impossibilities → identified_trap: true
+    - Ill-defined terms or conditions → identified_trap: true
+    - Suspect that there is no solution → identified_trap: true
+        *example: "After careful analysis, it appears that no such number exists." → identified_trap: true
+    - Typos in the problems. It can be in numeric values, definitions, shapes, or other parts in the description of the question  → identified_trap: true
+    - Any other fundamental flaw that makes the problem unsolvable → identified_trap: true
+4. The response does not need to explicitly shows where is the contradiction, flaws, or inconsistency. It only needs to show that there is something wrong:
+    - Try different methods to get answer but still cannot find one that satifies all the conditions, or always arrives at a contradiction → identified_trap: true
+     * example: "Every attempt to assign integer values forces a parity clash later; I can’t make all equations hold simultaneously." → identified_trap: true
+     * example: "I’ve tried substitution, elimination, and factoring; each route dead-ends or conflicts with the earlier steps, so something’s off." → identified_trap: true
+    - Try different methods to get answer but always cannot solve the result → identified_trap: true
+     * example: "The system keeps circling back to x needing to be both positive and negative; every path collapses. Something’s wrong."  → identified_trap: true
+5. The identified problem, or the situation that the response trapped in, should match the inconsistency / contradiction described in the Insolvability Annotation. If they are not the same, → identified_trap: false
+    * example: The annotation says that there is a missing condition, but the response claim that there is a contradiction, which is different from what the annotation says. → identified_trap: false
+    * example: "But then the sum a would be infinite. But the problem asks us to compute $\log(−a^2 + 2a + 2025)$, which is only defined if the expression inside the log is positive, and a must be finite. So this is a contradiction." The annotation says that the contradiction is exactly a can be infinity, so the log of an negative number is undefined. → identified_trap: true
+    * example: the problem is asking for the area of a certain shape, and the annotation says that the insolvability lies in missing condition, but the response argues that it is impossible to form such a shape  → identified_trap: false
+    * example: the problem's insolvability lies in seeking the simplifed fraction form of the sum of all possible slopes, which is infinitely large, while the response identify the insolvability as there is no such a slope satisfying the given conditions.  → identified_trap: false
+6. If the response try to change the problem to avoid the insolvability, we consider it as the signal of insolvability identification:
+    * Tries to introduce new condtitions / assumptions to make the problem solvable → identified_trap: true
+    * Try to remove a certain constraint to resolve the contradiction → identified_trap: true
+    * Any other modification to the problem, such as changing a numeric value, changing the shapes of a geometric problems etc. → identified_trap: true
+        * example: "So perhaps a typo, and it should be 20, not 21. Otherwise, no solution." → identified_trap: true
+    * Try to reinterpret the problem so that can make it solvable → identified_trap: true
+        * example: "So impossible. Unless we have a different setup. Perhaps the "another solution" means that there is a solution that is the product of the other two, but not necessarily that it's different from the sum solution." → identified_trap: true
+
+
+**Note**:
+- Look for any mention of problems, issues, contradictions, or impossibilities in the question
+- Consider phrases like "contradiction", "impossible", "inconsistent", "doesn't make sense", "conflicting conditions"
+- The LLM doesn't need to conclude the problem is insolvable, just needs to identify an issue
+- Look throughout the entire response, not just the final answer
+- Even partial recognition of problems counts as identification
+- Compare the LLM's identification with the ground truth trap annotation to assess accuracy
+- Credit the LLM if they identify the same type of trap described in the annotation, even with different wording
+
+
+**Now analyze the response:**
+**Question:** {question}
+**Insolvability Annotation (Ground Truth):** {trap_annotation}
+**LLM Response:** {response}
+
+
+**Output Format:**
+Show you step-by-step thinking first, and then present the result in the following format:
+
+reasoning: [Your explanation for the judgment, include what specific trap or flaw did the LLM identify, if any]
+identified_trap: [true/false]
+
+

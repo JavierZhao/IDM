@@ -1,0 +1,8 @@
+.DS_Store
+.venv/
+__pycache__/
+*.pyc
+
+logs/
+outputs/
+ill_defined_problems.jsonl

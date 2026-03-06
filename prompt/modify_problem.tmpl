@@ -1,0 +1,202 @@
+You are an expert at transforming well-defined mathematical problems into ill-defined problems. An ill-defined problem is one that misses necessary conditions or has contradictory conditions.
+
+Here are some examples of well-defined problems transformed into ill-defined ones:
+
+Example 1:
+Well-defined: "Given the function
+\[
+f(x)=\ln x+\frac{{2a}}{{x}},\qquad a\in\mathbb{{R}},
+\]
+suppose \(f(x)\) has two distinct zeros \(x_1,x_2\). what is the greatest possible value of \(a\)?"
+Ill-defined: "Given the function
+\[
+f(x)=\ln x+\frac{{2a}}{{x}},\qquad a\in\mathbb{{R}},
+\]
+suppose \(f(x)\) has two distinct zeros \(x_1,x_2\) and \(x_1< x_2<1/4\).  Find \(x_1+x_2\)."
+Annotation: "Note that on ((x_1,x_2)) we have (f(x)<0) (the minimum of (f) is negative), so in particular \(\int_{{x_1}}^{{x_2}} f(x)\,dx<0\). Compute the integral \(\int_{{x_1}}^{{x_2}} f'(x)\,x\,dx.\) On one hand, integrate by parts (or note (f'(x)x=(x-2a)/x) and use (f(x_1)=f(x_2)=0)): \(\int_{{x_1}}^{{x_2}} f'(x)\,x\,dx = \big[f(x)\,x\big]_{{x_1}}^{{x_2}}-\int_{{x_1}}^{{x_2}} f(x)\,dx = -\int_{{x_1}}^{{x_2}} f(x)\,dx >0.\) On the other hand, using (f'(x)=\dfrac{{x-2a}}{{x^2}}), \(\int_{{x_1}}^{{x_2}} f'(x)\,x\,dx = \int_{{x_1}}^{{x_2}}\frac{{x-2a}}{{x}}\,dx =\big[x-2a\ln x\big]_{{x_1}}^{{x_2}} =(x_2-x_1)-2a(\ln x_2-\ln x_1).\) But from the zero condition (\ln x_i=-\dfrac{{2a}}{{x_i}}) we get \(\ln x_2-\ln x_1 = -2a\Big(\frac{{1}}{{x_2}}-\frac{{1}}{{x_1}}\Big) =2a\,\frac{{x_2-x_1}}{{x_1x_2}}.\) Hence \(\int_{{x_1}}^{{x_2}} f'(x)\,x\,dx =(x_2-x_1)\Big(1-\frac{{4a^2}}{{x_1x_2}}\Big).\) Since this integral is (>0) and (x_2-x_1>0), we obtain \(1-\frac{{4a^2}}{{x_1x_2}}>0\quad\Longrightarrow\quad x_1x_2>4a^2.\) Finally, \(x_1+x_2 \ge 2\sqrt{{x_1x_2}} > 2\sqrt{{4a^2}} = 4a.\) Because the zeros are distinct the inequalities are strict, so From original solution we have\(a<\frac{{1}}{{2e}},\) then \(x_1+x_2>2/e>0.7\). But based on \(x_1< x_2<1/4\) we have \(x_1+x_2<0.5\). contradiction."
+
+Example 2:
+Well-defined: "Let \(S_n\) be the sum of the first \(n\) terms of the sequence \(\{{a_n}}\).  
+It is given that  
+\[
+\frac{{2S_n}}{{n}}+n = 2a_n+1.
+\]
+
+ If \(a_4, a_7, a_9\) form a geometric progression, find the minimum value of \(S_n\)."
+Ill-defined: "Let \(S_n\) be the sum of the first \(n\) terms of the sequence \(\{{a_n}}\).  
+It is given that  
+\[
+\frac{{2S_n}}{{n}}+n = 2a_n+1.
+\]
+
+ If \(a_5, a_7, a_9\) form a geometric progression, find the minimum value of \(S_n\)."
+Annotation: "Write the identity for \(n\) and for \(n-1\): \(\frac{{2S_n}}{{n}}+n=2a_n+1,\qquad \frac{{2S_{{n-1}}}}{{n-1}}+(n-1)=2a_{{n-1}}+1.\) Multiply each equation by its denominator and subtract the second from the first, using \(S_n-S_{{n-1}}=a_n\). After simplification one obtains \(2(n-1)\big(a_n-a_{{n-1}}\big)=2(n-1).\) For \(n\ge2\) divide by \(2(n-1)\) to get \(a_n-a_{{n-1}}=1.\) Hence the sequence is arithmetic with common difference \(d=1\). Thus \(a_n=a_1+(n-1).\) Using \(a_n=a_1+(n-1)\) (write \(x=a_1\)), compute \(a_5=x+4,\quad a_7=x+6,\quad a_9=x+8.\) The GP condition \(a_7^2=a_5\cdot a_9\) becomes \((x+6)^2=(x+4)(x+8).\) Expand both sides: \(x^2+12x+36 = x^2+12x+32.\) Cancel \(x^2+12x\) to get the contradiction \(36=32.\) This is impossible."
+
+Example 3:
+Well-defined: "Assume a number series is characterized in the following way:  
+\[
+b_1 = 3, \quad b_2 = 3,
+\]  
+and for \(m \ge 2\), we have that  
+\[
+b_{{m + 1}} b_{{m - 1}} = b_m^2 + 2007.
+\]  
+
+Your task is to determine the greatest integer that is less than or equal to  
+\[
+\frac{{b_{{2007}}^2+b_{{2006}}^2}}{{b_{{2007}}b_{{2006}}}}.
+\]"
+Ill-defined: "Assume a number series is characterized in the following way:   \(b_1 = 3\)
+and for \(m \ge 2\), we have that  
+\[
+b_{{m + 1}} b_{{m - 1}} = b_m^2 + 2025.
+\]  
+
+Your task is to determine the greatest integer that is less than or equal to  
+\[
+\frac{{b_{{2025}}^2+b_{{2024}}^2}}{{b_{{2025}}b_{{2024}}}}.
+\]"
+Annotation: "The recurrence \(b_{{m+1}}b_{{m-1}}=b_m^2+2025\) \quad (\(m\ge 2\)) relates three consecutive terms, so to uniquely determine the sequence you must supply two independent starting values (for example \(b_1\) and \(b_2\)). With only \(b_1=3\) the value of \(b_2\) is free, and different choices of \(b_2\) produce different sequences. The target expression can be written as \( \displaystyle \frac{{b_{{2025}}^2+b_{{2024}}^2}}{{b_{{2025}}b_{{2024}}}} = \frac{{b_{{2025}}}}{{b_{{2024}}}} + \frac{{b_{{2024}}}}{{b_{{2025}}}} = r + \frac{{1}}{{r}}, \) where \(r=\dfrac{{b_{{2025}}}}{{b_{{2024}}}}\). That ratio \(r\) depends on the entire evolution of the sequence and therefore on the unspecified value \(b_2\); hence the requested quantity is not determined by the data given."
+
+Example 4:
+Well-defined: "Determine the values of y that satisfy the equation
+ \[\frac{{1}}{{y - \sin 20^{{\circ}} / \cos 20^{{\circ}}}} + \frac{{1}}{{y + \sin 40^{{\circ}} / \cos 40^{{\circ}}}} + \frac{{1}}{{y - \sin 80^{{\circ}} / \cos 80^{{\circ}}}} = 0.\]
+ Please list the correct values of y, separated by commas."
+Ill-defined: "Determine the values of y that satisfy the equation \[\frac{{1}}{{y - \sin 20^{{\circ}} / \cos 20^{{\circ}}}} + \frac{{1}}{{y + \sin 60^{{\circ}} / \cos 60^{{\circ}}}} + \frac{{1}}{{y - \sin 80^{{\circ}} / \cos 80^{{\circ}}}} = 0.\] Please list the correct values of y in terms of \(m+ \sqrt{{n}}\), \(m,n\) are integers, separated by commas."
+Annotation: "Write the equation as \(\frac{{1}}{{y-\tan20^\circ}}+\frac{{1}}{{y+\tan60^\circ}}+\frac{{1}}{{y-\tan80^\circ}}=0, \qquad a:=\tan20^\circ,\; b:=\tan60^\circ=\sqrt3,\; c:=\tan80^\circ.\) Combining the three fractions yields \(N(y)=(y+b)(y-c)+(y-a)(y-c)+(y-a)(y+b)=3y^2+2(b-a-c)y+(ac-ab-bc),\) so \(y\) is a root of the quadratic \(3y^2+By+C=0\) with \(B=2(b-a-c),\qquad C=ac-ab-bc.\) Using \(c=\tan(60^\circ+20^\circ)=\dfrac{{\sqrt3+a}}{{1-\sqrt3\,a}}\) gives rational expressions in \(a\), \(B=2a\frac{{\sqrt3\,a-5}}{{1-\sqrt3\,a}},\qquad C=\frac{{4a^2-\sqrt3\,a-3}}{{1-\sqrt3\,a}},\) and hence \(y=\frac{{-B\pm\sqrt{{B^2-12C}}}}{{6}}.\) These roots cannot be written as \(m+\sqrt n\) with integers \(m,n\)."
+
+Example 5:
+Well-defined: "An entity starts from the origin point \((0,0)\) on a grid and moves in each step by one unit. It can move in four directions: left, right, upward, or downward, with equal chances for each direction. Let's denote the likelihood of the entity reaching the point \((2,2)\) within six steps or less as \(q\). If we can express \(q\) as a reduced fraction \(a/b\), where \(a\) and \(b\) are coprime positive integers, find the sum of \(a\) and \(b\)."
+Ill-defined: "An entity starts from the origin point \((0,0)\) on a grid and moves in each step by one unit. It can move in four directions: left, right, upward, or downward, with equal chances for each direction. Let's denote the likelihood of the entity reaching the point \((2,2)\) within six steps or less as \(q\). If we can express \(q\) as a reduced fraction \(a/b\), where \(a\) and \(b\) are coprime positive integers and \(a,b\) cannot both be 1, find the sum of \(a\) and \(b\)."
+Annotation: "By Pólya's theorem the simple symmetric random walk on \(\mathbb{{Z}}^2\) is recurrent, so the probability of ever visiting any fixed lattice site (like \((2,2)\)) is \(q = 1\). The unique reduced representation of \(1\) is \(\tfrac{{1}}{{1}}\). Indeed, if \(\gcd(a,b)=1\) and \(a/b=1\) then \(a=b\), so \(\gcd(a,b)=a=1\), hence \(a=b=1\). Thus \(a=b=1\), which directly contradicts the extra requirement that \(a,b\) \"cannot both be \(1\)\"."
+
+Example 6:
+Well-defined: "Given \(a, b, c > 0\) with \(a + b + c = 1\). Prove that
+\[
+\frac{{1}}{{a}} + \frac{{1}}{{b}} + \frac{{1}}{{c}} \ge 9.
+\]"
+Ill-defined: "Given \(a, b, c > 0\) with \(a + b + c = 1\). Prove that
+\[
+\frac{{1}}{{a}} + \frac{{1}}{{b}} + \frac{{1}}{{c}} = 9.
+\]"
+Annotation: "By Cauchy-Schwarz or AM-HM, \(\dfrac{{1}}{{a}}+\dfrac{{1}}{{b}}+\dfrac{{1}}{{c}}\ge\dfrac{{9}}{{a+b+c}}=9\). Equality holds if and only if \(a=b=c=\frac13\). For any other choice of \(a,b,c\) the sum is strictly larger than 9, so the equation \(\dfrac{{1}}{{a}}+\dfrac{{1}}{{b}}+\dfrac{{1}}{{c}}=9\) is not an identity but holds only for the single configuration \((a,b,c)=(\frac13,\frac13,\frac13)\). The claim that it equals 9 for all \(a,b,c>0\) with \(a+b+c=1\) is false."
+
+Example 7:
+Well-defined: "Suppose \(p(x) = x^3 + ax^2 + bx + c\) with real coefficients has three distinct real roots. If one of the roots is twice another root, find the relationship between \(a\) and \(b\)."
+Ill-defined: "Suppose \(p(x) = x^3 + ax^2 + bx + c\) with real coefficients has three distinct real roots \(r_1, r_2, r_3\) where \(r_2 = 2r_1\). Determine the value of \(r_1 + r_2 + r_3\)."
+Annotation: "By Vieta's formulas, \(r_1+r_2+r_3=-a\). The condition that \(r_2=2r_1\) gives us \(r_1+2r_1+r_3=-a\), i.e. \(3r_1+r_3=-a\). But \(r_1\) and \(r_3\) are free parameters (we can choose any distinct real values, subject to the constraint from the other Vieta relations). Different choices of \(r_1,r_3\) yield different values of the sum \(r_1+r_2+r_3\). The single constraint \(r_2=2r_1\) does not determine the actual values of the roots, hence the sum is not uniquely determined."
+
+Example 8:
+Well-defined: "How many 5-digit positive integers have the property that the product of their digits equals 120?"
+Ill-defined: "How many 5-digit positive integers have the property that the product of their digits equals 120 and the sum of their digits equals 15?"
+Annotation: "The prime factorization of 120 is \(2^3\cdot3\cdot5\). Any factorization into five single-digit factors must use digits from \(\{{1,2,3,4,5,6,8}}\) (since 7 and 9 don't divide 120). Checking all ways to write 120 as a product of 5 single digits, we can verify the digit-multisets: for instance \(\{{1,2,3,4,5}}\) gives product \(120\) and sum \(15\); \(\{{1,1,3,5,8}}\) gives product \(120\) and sum \(18\); \(\{{1,2,2,5,6}}\) gives product \(120\) and sum \(16\); etc. Most factorizations of 120 into five digits do not sum to 15. In fact, a systematic check shows that very few (or possibly zero, depending on enumeration) factorizations satisfy both constraints simultaneously. The additional sum constraint severely restricts or eliminates solutions."
+
+Example 9:
+Well-defined: "Let \(f: \mathbb{{R}} \to \mathbb{{R}}\) be a function satisfying \(f(x+y) = f(x) + f(y)\) for all \(x,y \in \mathbb{{R}}\) and \(f(1)=3\). Find \(f(5)\)."
+Ill-defined: "Let \(f: \mathbb{{R}} \to \mathbb{{R}}\) be a function satisfying \(f(x+y) = f(x) + f(y)\) for all \(x,y \in \mathbb{{R}}\). Find \(f(5)\)."
+Annotation: "The functional equation \(f(x+y)=f(x)+f(y)\) is Cauchy's equation. Without additional conditions (such as continuity or the value of \(f\) at a particular point), the solution is not unique. If we know \(f(1)=c\), then by induction \(f(n)=nc\) for all integers \(n\), and further assumptions (like continuity) give \(f(x)=cx\) for all real \(x\). Without specifying \(f(1)\) or another initial condition, \(f(5)\) cannot be determined."
+
+Example 10:
+Well-defined: "A rectangle has perimeter 40 cm and area 96 cm². Find its dimensions."
+Ill-defined: "A rectangle has perimeter 40 cm and area 100 cm². Find its dimensions."
+Annotation: "Let the sides be \(x\) and \(y\). Then \(2(x+y)=40\) so \(x+y=20\), and \(xy=100\). Substituting \(y=20-x\) into the area equation gives \(x(20-x)=100\), i.e. \(20x-x^2=100\) or \(x^2-20x+100=0\). The discriminant is \(\Delta=400-400=0\), giving \(x=10\) (a double root), so \(y=10\). But if \(x=y=10\), the figure is a square, and its area is \(100\) cm². This is consistent. However, the well-defined problem stated area 96, which would give a positive discriminant and two distinct real solutions. Changing the area to 100 forces the rectangle to be a square and loses one degree of freedom. If one insists the problem asks for dimensions of a non-square rectangle with area 100 and perimeter 40, there is no solution."
+
+Example 11:
+Well-defined: "Solve the system of equations:
+\[
+\begin{{cases}}
+x + y = 7 \\
+x - y = 3
+\end{{cases}}
+\]"
+Ill-defined: "Solve the system of equations:
+\[
+\begin{{cases}}
+x + y = 7 \\
+x + y = 5
+\end{{cases}}
+\]"
+Annotation: "The two equations \(x+y=7\) and \(x+y=5\) are contradictory. No pair \((x,y)\) can satisfy both simultaneously, since they would require \(7=5\). The system is inconsistent and has no solution."
+
+Example 12:
+Well-defined: "Find the remainder when \(2^{{100}}\) is divided by 7."
+Ill-defined: "Find the remainder when \(2^{{100}}\) is divided by 7, given that \(2^3 \equiv 1 \pmod{{7}}\)."
+Annotation: "In fact, \(2^3=8\equiv 1\pmod{{7}}\) is true. Then \(2^{{100}}=2^{{3\cdot33+1}}=(2^3)^{{33}}\cdot2\equiv1^{{33}}\cdot2\equiv2\pmod7\). The 'given' condition is actually correct, so this modification does not create an ill-defined problem. A truly ill-defined version would state an incorrect congruence, e.g. 'given that \(2^3\equiv2\pmod{{7}}\)', which contradicts \(2^3=8\). That false premise makes the problem inconsistent."
+
+Example 13:
+Well-defined: "In triangle \(ABC\), if \(\angle A = 60^\circ\), \(\angle B = 80^\circ\), find \(\angle C\)."
+Ill-defined: "In triangle \(ABC\), if \(\angle A = 60^\circ\), \(\angle B = 80^\circ\), and \(\angle C = 50^\circ\), verify that the triangle is valid."
+Annotation: "The sum of angles in any triangle must equal \(180^\circ\). Here \(60^\circ+80^\circ+50^\circ=190^\circ\neq180^\circ\). The given angles are inconsistent with the triangle inequality for angles, so no such triangle exists. The problem asks to verify a configuration that violates a fundamental geometric constraint."
+
+Example 14:
+Well-defined: "Let \(S = \{{1,2,3,4,5}}\). How many subsets of \(S\) have exactly 3 elements?"
+Ill-defined: "Let \(S = \{{1,2,3,4,5}}\). How many subsets of \(S\) have exactly 3 elements and contain both 1 and 6?"
+Annotation: "The set \(S\) does not contain 6, so no subset of \(S\) can contain 6. The condition 'contain both 1 and 6' is impossible to satisfy. Hence the answer is 0, but the problem is ill-posed because it imposes a condition that contradicts the definition of \(S\)."
+
+Example 15:
+Well-defined: "Find all real solutions to \(x^2 - 4x + 4 = 0\)."
+Ill-defined: "Find all distinct real solutions to \(x^2 - 4x + 4 = 0\)."
+Annotation: "The equation factors as \((x-2)^2=0\), which has a double root at \(x=2\). There is only one real solution (with multiplicity 2), not two distinct solutions. Requiring 'distinct' solutions when the equation has a repeated root makes the problem ill-defined."
+
+Example 16:
+Well-defined: "Reflect on the geometric sequence \(4 + \frac{{12}}{{b}} + \frac{{36}}{{b^2}} + \cdots\). If the total of this series equates to a perfect square, determine the least possible value of \(b\) given that \(b\) is a positive integer."
+Ill-defined: "Reflect on the geometric sequence \(4 + \frac{{12}}{{b}} + \frac{{36}}{{b^2}} + \cdots\). If the total of this series equates to a perfect square, determine the least possible value of \(b\) given that \(b\) is a positive prime integer."
+Annotation: "The series is geometric with first term \(a=4\) and ratio \(r=\dfrac{{3}}{{b}}\). For convergence we need \(|r|<1\), so \(b>3\). The sum is \(S=\frac{{a}}{{1-r}}=\frac{{4}}{{1-\frac{{3}}{{b}}}}=\frac{{4b}}{{b-3}}.\) Require \(S=k^2\) for some integer \(k\). Then \(\frac{{4b}}{{b-3}}=k^2 \quad\Longrightarrow\quad (k^2-4)b=3k^2 \quad\Longrightarrow\quad b=3+\frac{{12}}{{k^2-4}}.\) Thus \(k^2-4\) must be a positive divisor of \(12\). Checking divisors \(1,2,3,4,6,12\) shows the only possibility giving a square is \(k^2-4=12\), i.e. \(k^2=16\) and \(k=4\). This yields \(b=3+\frac{{12}}{{12}}=4,\qquad S=\frac{{4\cdot4}}{{4-3}}=16=4^2.\) Therefore the least (and only) integer \(b>3\) with the desired property is 4. Any integer \(b\) making the sum a perfect square must equal \(4\). But \(4\) is not prime. Hence no prime \(b\) satisfies the requirement."
+
+Example 17:
+Well-defined: "Suppose \(x,\, y,\) and \(z\) are positive real numbers. Compute the range of possible outcomes for the following expression:
+\[
+\frac{{z}}{{x}} + \frac{{x}}{{y + z}} + \frac{{y}}{{z}}.
+\]"
+Ill-defined: "Suppose \(x,\, y,\) and \(z\) are positive real numbers and
+\[
+\frac{{z}}{{x}} + \frac{{x}}{{y + z}} + \frac{{y}}{{z}}=2
+\]
+Then what is value of \(x+y+z\)?"
+Annotation: "Let \(S=\frac{{z}}{{x}}+\frac{{x}}{{y+z}}+\frac{{y}}{{z}},\qquad x,y,z>0.\) Then \(S+1=\frac{{z}}{{x}}+\frac{{x}}{{y+z}}+\frac{{y}}{{z}}+1 =\frac{{z}}{{x}}+\frac{{x}}{{y+z}}+\frac{{y+z}}{{z}}.\) Apply AM–GM to the three positive terms \(\dfrac{{z}}{{x}},\ \dfrac{{x}}{{y+z}},\ \dfrac{{y+z}}{{z}}\): \(\frac{{z}}{{x}}+\frac{{x}}{{y+z}}+\frac{{y+z}}{{z}} \;\ge\; 3\sqrt[3]{{\frac{{z}}{{x}}\cdot\frac{{x}}{{y+z}}\cdot\frac{{y+z}}{{z}}}} =3.\) Hence \(S+1\ge3\), so \(S\ge2\). Equality in AM–GM would require \(\frac{{z}}{{x}}=\frac{{x}}{{y+z}}=\frac{{y+z}}{{z}}=1.\) But these equalities together force \(x=y+z\) and \(y+z=z\), so \(y=0\), contradicting the hypothesis \(y>0\). Therefore equality cannot occur, and in fact \(S+1>3\quad\Rightarrow\quad S>2.\) Thus the equation \(\frac{{z}}{{x}}+\frac{{x}}{{y+z}}+\frac{{y}}{{z}}=2\) has no solution with positive \(x,y,z\). Consequently the question "what is the value of \(x+y+z\)?" is ill-posed."
+
+Example 18:
+Well-defined: "Consider four unique complex numbers \(p,\, q,\, r,\, s,\) all of which have an absolute value of 1, and the sum of which equals 0. Determine the maximum possible value of the absolute value of the expression
+\[
+|(p + q)(p + r)(p + s)(q + r)(q + s)(r + s)|.
+\]"
+Ill-defined: "Let \(p,q,r,s\) be distinct complex numbers with
+\[
+|p|=|q|=|r|=|s|=1,\qquad p+q+r+s=0.
+\]
+Determine the maximum value of
+\[
+\Big|(p+q)(q+r)(r+s)(s+p)\Big|.
+\]"
+Annotation: "From \(p+q+r+s=0\) and \(|\cdot|=1\) one checks (conjugate the sum and multiply by \(pqrs\)) that the third elementary symmetric sum vanishes, so the monic polynomial with roots \(p,q,r,s\) is even. Hence the multiset of roots must be of the form \(\{{\pm u,\pm v}}\) with \(|u|=|v|=1\). Up to relabeling we may take \(p=u,\quad q=v,\quad r=-u,\quad s=-v.\) Then \(\begin{{aligned}} (p+q)(q+r)(r+s)(s+p) &=(u+v)(v-u)(-u-v)(-v+u)\\ &=(u+v)(v-u)\cdot(-(u+v))\cdot (-(v-u))\\ &=(u+v)^2(v-u)^2. \end{{aligned}}\) Therefore \(\Big|(p+q)(q+r)(r+s)(s+p)\Big|=|u+v|^2\,|v-u|^2.\) Write \(u=e^{{i\alpha}},\,v=e^{{i\beta}}\) and let \(\Delta=\alpha-\beta\). Then \(|u+v|=2\Big|\cos\frac{{\Delta}}{{2}}\Big|,\qquad |v-u|=2\Big|\sin\frac{{\Delta}}{{2}}\Big|,\) so \(\Big|(p+q)(q+r)(r+s)(s+p)\Big| =16\cos^2\frac{{\Delta}}{{2}}\sin^2\frac{{\Delta}}{{2}} =4\sin^2\Delta.\) Thus the value depends on the free angle difference \(\Delta\) and is not fixed by the given constraints."
+
+Example 19:
+Well-defined: "Given that \(\alpha^{{1997}} = 1\) and \(\alpha\) is not equal to 1, find the value of the following expression:
+\[
+\frac{{1}}{{1 + \alpha}} + \frac{{1}}{{1 + \alpha^2}} + \dots + \frac{{1}}{{1 + \alpha^{{1997}}}}.
+\]"
+Ill-defined: "Given that \(\alpha^{{1997}} = 1\) and \(\alpha\) is not equal to 1, find the value of the following expression:
+\[
+\frac{{1}}{{1 + \alpha}} + \frac{{1}}{{1 + \alpha^2}} + \dots + \frac{{1}}{{1 + \alpha^{{1999}}}}.
+\]"
+Annotation: "From \(\alpha^{{1997}}=1\) we have \(\alpha^{{1998}}=\alpha\) and \(\alpha^{{1999}}=\alpha^2\). Hence \(S=\sum_{{k=1}}^{{1999}}\frac{{1}}{{1+\alpha^k}} =\sum_{{k=1}}^{{1997}}\frac{{1}}{{1+\alpha^k}}+\frac{{1}}{{1+\alpha^{{1998}}}}+\frac{{1}}{{1+\alpha^{{1999}}}}.\) Pairing \(k\) with \(1997-k\) for \(1\le k\le1996\) gives, for each such pair, \(\frac{{1}}{{1+\alpha^k}}+\frac{{1}}{{1+\alpha^{{1997-k}}}} =\frac{{1}}{{1+\alpha^k}}+\frac{{1}}{{1+\alpha^{{-k}}}} =\frac{{1}}{{1+\alpha^k}}+\frac{{\alpha^k}}{{1+\alpha^k}}=1.\) There are \(1996/2=998\) such pairs, and the remaining term when summing to \(1997\) is \(\dfrac{{1}}{{1+\alpha^{{1997}}}}=\dfrac{{1}}{{1+1}}=\dfrac12\). Thus \(\sum_{{k=1}}^{{1997}}\frac{{1}}{{1+\alpha^k}}=998+\frac12=\frac{{1997}}{{2}}.\) Therefore \(S=\frac{{1997}}{{2}}+\frac{{1}}{{1+\alpha}}+\frac{{1}}{{1+\alpha^2}}.\) The extra two terms \(\dfrac{{1}}{{1+\alpha}}+\dfrac{{1}}{{1+\alpha^2}}\) depend on the particular choice of the nontrivial 1997th root of unity \(\alpha\). The single hypothesis \(\alpha^{{1997}}=1,\ \alpha\ne1\) does not determine those two terms uniquely."
+
+Example 20:
+Well-defined: "Consider a parallelogram enclosed by the lines \(y = px + q\), \(y = px + r\), \(y = sx + q\), and \(y = sx + r\) that has an area of 18. Now consider another parallelogram enclosed by the lines \(y = px + q\), \(y = px - r\), \(y = sx + q\), and \(y = sx - r\) that has an area of 72. If \(p\), \(s\), \(q\), and \(r\) are positive integers, what is the smallest possible sum of \(p + s + q + r\)?"
+Ill-defined: "Consider a parallelogram enclosed by the lines \(y = px + q\), \(y = px + r\), \(y = sx + q\), and \(y = sx + r\) that has an area of 18. Now consider another parallelogram enclosed by the lines \(y = px + q\), \(y = px - r\), \(y = sx + q\), and \(y = sx - r\) that has an area of 54. If \(p\), \(s\), \(q\), and \(r\) are positive integers, what is the smallest possible sum of \(p + s + q + r\)?"
+Annotation: "Label the four lines \( \ell_{{p,q}}: y = px + q,\ \ell_{{p,r}}: y = px + r,\ \ell_{{s,q}}: y = sx + q,\ \ell_{{s,r}}: y = sx + r.\) Let \(x_1\) be the \(x\)-coordinate of the intersection \(\ell_{{p,q}} \cap \ell_{{s,r}}\). Solving \(px + q = sx + r\) gives \(x_1 = \dfrac{{r - q}}{{p - s}}.\) Take side vectors \(u = x_1(1, p)\) and \(v = -x_1(1, s)\). Hence \(\mathrm{{Area}} = |\det(u,v)| = x_1^2 |p - s| = \dfrac{{(r - q)^2}}{{|p - s|}}.\) For the first parallelogram, \(\dfrac{{(r - q)^2}}{{|p - s|}} = 18.\) For the second (intercepts \(q, -r\)), \(\dfrac{{(q + r)^2}}{{|p - s|}} = 54.\) Dividing yields \(\dfrac{{(q + r)^2}}{{(r - q)^2}} = 3,\) so \(\left(\dfrac{{q + r}}{{r - q}}\right)^2 = 3\) and \(\dfrac{{q + r}}{{r - q}} = \pm \sqrt{{3}}.\) But for integer \(q, r\), the left side is rational while \(\sqrt{{3}}\) is irrational — a contradiction. Therefore, no integer pair \((q, r)\) can satisfy both equations."
+
+Now, transform the following well-defined problem into an ill-defined problem:
+
+Problem: {problem}
+
+Provide your answer in JSON format with two keys:
+1. "modified_problem": The ill-defined version of the problem
+2. "annotation": A clear explanation of why this modified problem is ill-defined
+
+Make sure to:
+- Introduce contradictory conditions or remove a necessary condition
+- Keep the problem mathematically as close as possible to the original
+- Make the annotation specific and clear
+
+JSON Response:

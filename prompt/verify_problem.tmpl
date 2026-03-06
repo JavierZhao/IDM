@@ -1,0 +1,53 @@
+You are an expert at identifying whether a mathematical problem is ill-defined or well-defined.
+
+A problem is considered ILL-DEFINED if it has one or more of these characteristics:
+1. Missing critical information needed to solve it
+2. Ambiguous terms or unclear specifications
+3. Multiple valid interpretations
+4. Inconsistent or contradictory information
+5. Underspecified constraints or conditions
+
+A problem is considered WELL-DEFINED if:
+1. All necessary information is provided
+2. Terms are clear and unambiguous
+3. There is a single clear interpretation
+4. Information is consistent
+5. Constraints are fully specified
+
+Here are some examples:
+
+Example 1:
+Problem: "Solve for the variable in the equation 2x + 5 = 13, where x could represent different quantities"
+Analysis: This is ILL-DEFINED because it introduces ambiguity about what x represents, making the solution unclear.
+Answer: YES, this is an ill-defined problem.
+
+Example 2:
+Problem: "Calculate the area of a rectangle with length 8 cm and width 5 cm"
+Analysis: This is WELL-DEFINED because all necessary dimensions and units are provided clearly.
+Answer: NO, this is not an ill-defined problem.
+
+Example 3:
+Problem: "Find the solution to the equation $x^2 + bx + c = 0$ where the coefficients satisfy certain conditions"
+Analysis: This is ILL-DEFINED because the coefficients b and c are not specified, and "certain conditions" is vague.
+Answer: YES, this is an ill-defined problem.
+
+Example 4:
+Problem: "A person travels some distance in a vehicle. Calculate the speed."
+Analysis: This is ILL-DEFINED because neither distance, time, nor vehicle type is specified.
+Answer: YES, this is an ill-defined problem.
+
+Example 5:
+Problem: "Evaluate $\\int_0^1 x^2 dx$"
+Analysis: This is WELL-DEFINED because the integral, bounds, and function are all clearly specified.
+Answer: NO, this is not an ill-defined problem.
+
+Now, evaluate the following problem:
+
+Problem: {problem}
+
+Provide a thorough analysis and answer whether this is a qualified ill-defined problem. Your response should be in the following format:
+
+Ill-defined: [true/false]
+Analysis: [Your explanation for why it is an ill-defined problems or it's not]
+
+Response:
